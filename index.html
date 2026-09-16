@@ -169,6 +169,76 @@
     cursor: pointer;
   }
 
+  .navbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    background: var(--navy);
+    padding: 10px 10px;
+    margin: -20px -14px 16px;
+    border-radius: 0 0 12px 12px;
+  }
+  .navbar a {
+    flex: 0 0 auto;
+    color: #e8e2d0;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 7px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+  .navbar a:active, .navbar a:hover { background: var(--gold); color: var(--navy); }
+
+  .info-section { margin-top: 20px; }
+  .info-section h2 {
+    font-size: 16px;
+    color: var(--navy);
+    margin: 0 0 10px;
+    padding-left: 10px;
+    border-left: 4px solid var(--gold);
+  }
+  table.info-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    font-size: 13px;
+    margin-bottom: 16px;
+  }
+  table.info-table th {
+    background: var(--navy);
+    color: #f5efe0;
+    padding: 9px 10px;
+    text-align: left;
+    font-weight: 600;
+  }
+  table.info-table td {
+    padding: 9px 10px;
+    border-top: 1px solid var(--border);
+    color: var(--text);
+  }
+  table.info-table tr:nth-child(even) td { background: #faf8f2; }
+  table.awards-table th:nth-child(2), table.awards-table td:nth-child(2) { white-space: nowrap; width: 1%; }
+
+  .notice-box {
+    background: #fdf9ef;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--gold);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.6;
+    margin-bottom: 14px;
+  }
+  .notice-box b { color: var(--navy); }
+
   footer { text-align: center; margin-top: 24px; font-size: 12px; color: var(--text-sub); line-height: 1.7; }
 
   .mic { width: 56px; height: 56px; margin: 0 auto 8px; animation: micwiggle 2.6s ease-in-out infinite; }
@@ -185,6 +255,13 @@
 </head>
 <body>
 <div class="wrap">
+  <nav class="navbar">
+    <a href="#section-apply" onclick="switchTab('apply')">신청하기</a>
+    <a href="#section-lookup" onclick="switchTab('lookup')">조회·취소</a>
+    <a href="#section-timetable">타임테이블</a>
+    <a href="#section-awards">시상계획</a>
+    <a href="#section-notice">유의사항</a>
+  </nav>
   <header>
     <span class="sparkle s1">✦</span>
     <span class="sparkle s2">✧</span>
@@ -215,7 +292,7 @@
   <div class="dday-card">
     <div class="label" id="ddayLabel">예선까지</div>
     <div class="num" id="ddayNum">D-00</div>
-    <div class="sub">신청기간 9/18(금) ~ 10/6(월) · 선착순 마감</div>
+    <div class="sub">신청기간 9/22(화) ~ 10/6(월) · 선착순 마감</div>
   </div>
 
   <div class="capacity-card">
@@ -223,10 +300,11 @@
     <span class="cnt" id="capacityText">불러오는 중...</span>
   </div>
 
-  <div class="tabs">
+  <div class="tabs" id="section-apply">
     <button class="tab-btn active" id="tabApply" onclick="switchTab('apply')">신청하기</button>
     <button class="tab-btn" id="tabLookup" onclick="switchTab('lookup')">조회·취소</button>
   </div>
+  <div id="section-lookup"></div>
 
   <!-- 신청 폼 -->
   <div class="card" id="applyCard">
@@ -276,6 +354,41 @@
       <div class="result-row"><span class="k">참여 프로그램</span><span id="rProgram"></span></div>
       <div class="result-row"><span class="k">상태</span><span id="rStatus"></span></div>
       <button class="cancel-btn" id="cancelBtn">신청 취소하기</button>
+    </div>
+  </div>
+
+  <div class="info-section">
+    <h2 id="section-timetable">진행 타임테이블</h2>
+    <table class="info-table">
+      <tr><th>시간</th><th>활동내용</th></tr>
+      <tr><td>13:00~13:30</td><td>1층 강당 세팅 및 음향장비 점검 (30분)</td></tr>
+      <tr><td>13:30~14:00</td><td>참가자 및 보호자 접수 / 음향확인 등 (30분)</td></tr>
+      <tr><td>14:00~14:10</td><td>개회 및 가요제 진행방법 / 심사기준 안내</td></tr>
+      <tr><td>14:10~15:00</td><td>이용자 노래 경연 (50분)</td></tr>
+      <tr><td>15:00~15:10</td><td>스페셜 무대(축하공연) (10분)</td></tr>
+      <tr><td>15:10~15:45</td><td>이용자 노래 경연 (35분)</td></tr>
+      <tr><td>15:45~16:00</td><td>심사결과 집계 및 발표 (본선 진출자 6명 안내)</td></tr>
+    </table>
+
+    <h2 id="section-awards">시상계획 (총 6명)</h2>
+    <table class="info-table awards-table">
+      <tr><th>연번</th><th>시상</th><th>내용 및 시상</th></tr>
+      <tr><td>1</td><td>최우수상</td><td>심사점수 1위 / 상장 및 10만원 상당의 부상 (1명)</td></tr>
+      <tr><td>2</td><td>우수상</td><td>심사점수 2위 / 상장 및 5만원 상당의 부상 (1명)</td></tr>
+      <tr><td>3</td><td>장려상</td><td>심사점수 3위 / 상장 및 3만원 상당의 부상 (2명)</td></tr>
+      <tr><td>4</td><td>인기상</td><td>관객에게 가장 많은 호응을 받은 참가자 / 상장 및 부상 (1명)</td></tr>
+      <tr><td>5</td><td>열정상</td><td>무대를 적극적으로 즐기고 열정적 모습을 보인 참가자 / 상장 및 부상 (1명)</td></tr>
+    </table>
+
+    <div class="notice-box" id="section-notice">
+      <b>신청곡 안내</b><br>
+      신청곡은 2023년 11월까지 금영노래방 반주기기에 등록된 곡이어야 합니다. (최신곡 신청 불가)
+    </div>
+
+    <div class="notice-box">
+      <b>본선 진출 안내</b><br>
+      본선 진출자 6명은 반드시 10월 24일(토) 본선 최종무대에 참가해야 합니다.<br>
+      단, 본선 진출자가 부득이한 사유로 본선 참가가 어려운 경우 차순위자를 본선 진출자로 선정합니다.
     </div>
   </div>
 
