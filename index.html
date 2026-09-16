@@ -290,7 +290,7 @@
   </header>
 
   <div class="dday-card">
-    <div class="label" id="ddayLabel">예선마감까지</div>
+    <div class="label" id="ddayLabel">예선신청마감까지</div>
     <div class="num" id="ddayNum">D-00</div>
     <div class="sub">신청기간 9/21(월) ~ 10/6(월) · 선착순 마감</div>
   </div>
@@ -452,7 +452,7 @@ function updateDday() {
   const num = document.getElementById('ddayNum');
 
   if (diffDays > 0) {
-    label.textContent = '예선마감까지';
+    label.textContent = '예선신청마감까지';
     num.textContent = 'D-' + diffDays;
   } else if (diffDays === 0) {
     label.textContent = '오늘 마감';
