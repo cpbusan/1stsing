@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>제1회 부뇌복 가요제 예선 신청</title>
+<style>
+  :root {
+    --bg: #faf6ef;
+    --card: #ffffff;
+    --navy: #1c2b3a;
+    --navy-dark: #101c27;
+    --gold: #c9a227;
+    --gold-dark: #a3831c;
+    --text: #1c2b3a;
+    --text-sub: #6b6f76;
+    --border: #e4ddcd;
+    --success: #1c2b3a;
+    --danger: #a3831c;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    background: linear-gradient(180deg, #f2ecdd 0%, #faf6ef 240px);
+    color: var(--text);
+    padding: 20px 14px 60px;
+  }
+  .wrap { max-width: 480px; margin: 0 auto; }
+  header { text-align: center; margin-bottom: 20px; }
+  header h1 {
+    font-size: 22px;
+    margin: 0 0 6px;
+    color: var(--navy);
+    font-weight: 800;
+  }
+  header p { margin: 0; color: var(--text-sub); font-size: 14px; }
+
+  .dday-card {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+    color: #f5efe0;
+    border-radius: 16px;
+    padding: 18px;
+    text-align: center;
+    margin-bottom: 16px;
+    border: 1px solid var(--navy-dark);
+    box-shadow: 0 6px 16px rgba(28,43,58,0.2);
+  }
+  .dday-card .num { color: var(--gold); }
+  .dday-card .label { font-size: 13px; opacity: 0.85; margin-bottom: 4px; }
+  .dday-card .num { font-size: 34px; font-weight: 800; }
+  .dday-card .sub { font-size: 13px; margin-top: 6px; opacity: 0.9; }
+
+  .capacity-card {
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .capacity-card .txt { font-size: 14px; color: var(--text-sub); }
+  .capacity-card .cnt { font-size: 20px; font-weight: 800; color: var(--navy); }
+
+  .tabs { display: flex; gap: 8px; margin-bottom: 14px; }
+  .tab-btn {
+    flex: 1;
+    padding: 11px;
+    border: 2px solid var(--border);
+    background: #fff;
+    border-radius: 10px;
+    font-size: 14px;
+    color: var(--text);
+    cursor: pointer;
+    font-weight: 600;
+  }
+  .tab-btn.active {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+    color: #fff;
+    border-color: var(--navy-dark);
+  }
+
+  .card {
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+  }
+  .hidden { display: none; }
+
+  label { display: block; font-size: 13px; color: var(--text); font-weight: 600; margin: 12px 0 6px; }
+  input {
+    width: 100%;
+    padding: 11px 12px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    font-size: 15px;
+    background: #ffffff;
+    color: #000000;
+  }
+  input:focus { outline: none; border-color: var(--gold); }
+
+  .agree { display: flex; align-items: flex-start; gap: 8px; margin-top: 14px; }
+  .agree input { width: auto; margin-top: 3px; }
+  .agree span { font-size: 13px; color: var(--text-sub); line-height: 1.5; }
+
+  button.submit {
+    width: 100%;
+    margin-top: 18px;
+    padding: 13px;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+    color: #1c2b3a;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(201,162,39,0.28);
+  }
+  button.submit:disabled { background: #ccc4a8; color: #7a7568; box-shadow: none; cursor: not-allowed; }
+  button.submit:active { opacity: 0.85; }
+
+  .msg {
+    margin-top: 14px;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    display: none;
+    border: 2px solid var(--border);
+  }
+  .msg.show { display: block; }
+  .msg.ok { background: #f2ecdd; color: var(--navy); border-color: var(--gold); }
+  .msg.err { background: var(--navy); color: #fff; border-color: var(--navy-dark); }
+
+  .result-box {
+    margin-top: 16px;
+    padding: 16px;
+    background: #ffffff;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    display: none;
+  }
+  .result-box.show { display: block; }
+  .result-row { display: flex; justify-content: space-between; padding: 5px 0; font-size: 14px; }
+  .result-row .k { color: var(--text-sub); }
+  .status-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    border: 1px solid #000000;
+  }
+  .status-badge.신청 { background: linear-gradient(135deg, var(--navy), var(--navy-dark)); color: #fff; }
+  .status-badge.취소 { background: #fff; color: var(--text-sub); }
+
+  button.cancel-btn {
+    width: 100%;
+    margin-top: 14px;
+    padding: 11px;
+    background: #fff;
+    border: 2px solid var(--navy);
+    color: var(--navy);
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  footer { text-align: center; margin-top: 24px; font-size: 12px; color: var(--text-sub); line-height: 1.7; }
+
+  .discoball { width: 64px; height: 64px; margin: 0 auto 8px; animation: spin 9s linear infinite; }
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+  .sparkle { position: absolute; color: var(--gold); opacity: 0.85; pointer-events: none; }
+  .sparkle.s1 { top: 6px; left: 10%; font-size: 16px; animation: twinkle 2.4s ease-in-out infinite; }
+  .sparkle.s2 { top: 30px; right: 12%; font-size: 12px; animation: twinkle 3.1s ease-in-out infinite 0.4s; }
+  .sparkle.s3 { top: 70px; left: 22%; font-size: 10px; animation: twinkle 2.8s ease-in-out infinite 0.9s; }
+  @keyframes twinkle { 0%, 100% { opacity: 0.2; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.15); } }
+
+  header { position: relative; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="sparkle s1">✦</span>
+    <span class="sparkle s2">✧</span>
+    <span class="sparkle s3">✦</span>
+    <svg class="discoball" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="ballShine" cx="35%" cy="30%" r="70%">
+          <stop offset="0%" stop-color="#fdf6e3"/>
+          <stop offset="55%" stop-color="#c9a227"/>
+          <stop offset="100%" stop-color="#8a6f1a"/>
+        </radialGradient>
+      </defs>
+      <circle cx="50" cy="50" r="38" fill="url(#ballShine)"/>
+      <g stroke="#1c2b3a" stroke-width="0.6" opacity="0.35">
+        <path d="M12 50 A38 38 0 0 1 88 50" fill="none"/>
+        <path d="M15 35 A38 38 0 0 1 85 35" fill="none"/>
+        <path d="M15 65 A38 38 0 0 1 85 65" fill="none"/>
+        <path d="M50 12 L50 88" />
+        <path d="M28 15 L72 85" />
+        <path d="M72 15 L28 85" />
+      </g>
+    </svg>
+    <h1>제1회 부뇌복 가요제</h1>
+    <p>예선 참가 신청 · 2026.10.12(월) 14:00~16:00 · 1층 강당</p>
+  </header>
+
+  <div class="dday-card">
+    <div class="label" id="ddayLabel">예선까지</div>
+    <div class="num" id="ddayNum">D-00</div>
+    <div class="sub">신청기간 9/18(금) ~ 10/6(월) · 선착순 마감</div>
+  </div>
+
+  <div class="capacity-card">
+    <span class="txt">현재 신청 현황</span>
+    <span class="cnt" id="capacityText">불러오는 중...</span>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" id="tabApply" onclick="switchTab('apply')">신청하기</button>
+    <button class="tab-btn" id="tabLookup" onclick="switchTab('lookup')">조회·취소</button>
+  </div>
+
+  <!-- 신청 폼 -->
+  <div class="card" id="applyCard">
+    <form id="applyForm">
+      <label>이름</label>
+      <input type="text" id="name" required>
+
+      <label>생년월일 (예: 900101)</label>
+      <input type="text" id="birth" placeholder="6자리" required>
+
+      <label>연락처</label>
+      <input type="tel" id="phone" placeholder="010-0000-0000" maxlength="13" required>
+
+      <label>신청곡 (가수 - 곡명)</label>
+      <input type="text" id="song" placeholder="예: 나훈아 - 테스형" required>
+
+      <label>최근 2년 이내 참여 프로그램</label>
+      <input type="text" id="program" placeholder="예: 보치아, 시민옹호 프로그램" required>
+
+      <div class="agree">
+        <input type="checkbox" id="agree" required>
+        <span>최근 2년 이내 부산뇌병변복지관 이용자이며, 신청곡 1절만 부르는 예선 진행방식에 동의합니다.</span>
+      </div>
+
+      <button type="submit" class="submit" id="applyBtn">신청하기</button>
+      <div class="msg" id="applyMsg"></div>
+    </form>
+  </div>
+
+  <!-- 조회/취소 -->
+  <div class="card hidden" id="lookupCard">
+    <form id="lookupForm">
+      <label>이름</label>
+      <input type="text" id="lName" required>
+
+      <label>연락처</label>
+      <input type="tel" id="lPhone" placeholder="010-0000-0000" maxlength="13" required>
+
+      <button type="submit" class="submit">조회하기</button>
+      <div class="msg" id="lookupMsg"></div>
+    </form>
+
+    <div class="result-box" id="resultBox">
+      <div class="result-row"><span class="k">접수번호</span><span id="rNo"></span></div>
+      <div class="result-row"><span class="k">이름</span><span id="rName"></span></div>
+      <div class="result-row"><span class="k">신청곡</span><span id="rSong"></span></div>
+      <div class="result-row"><span class="k">참여 프로그램</span><span id="rProgram"></span></div>
+      <div class="result-row"><span class="k">상태</span><span id="rStatus"></span></div>
+      <button class="cancel-btn" id="cancelBtn">신청 취소하기</button>
+    </div>
+  </div>
+
+  <footer>
+    문의: 부산뇌병변복지관 사업기획팀<br>
+    ※ 본선 진출자 6명은 10/24(토) 13:30 최종무대 참가
+  </footer>
+</div>
+
+<script>
+// ===== 배포 시 아래 URL을 본인의 Apps Script 웹앱 URL로 교체하세요 =====
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbw7KjB8-HSTUGMWphxkSRkJ3zk2H013j67jRq2IGgjU2pckK0pxc_5PAzziqLvELoeZ/exec';
+
+// 연락처 입력 시 자동 하이픈(010-0000-0000)
+function formatPhone(input) {
+  input.addEventListener('input', () => {
+    let v = input.value.replace(/[^0-9]/g, '').slice(0, 11);
+    if (v.length < 4) {
+      input.value = v;
+    } else if (v.length < 8) {
+      input.value = v.slice(0, 3) + '-' + v.slice(3);
+    } else {
+      input.value = v.slice(0, 3) + '-' + v.slice(3, 7) + '-' + v.slice(7);
+    }
+  });
+}
+formatPhone(document.getElementById('phone'));
+formatPhone(document.getElementById('lPhone'));
+
+// D-day 계산 (예선일 2026-10-12 14:00 기준)
+function updateDday() {
+  const target = new Date('2026-10-12T14:00:00+09:00');
+  const now = new Date();
+  const diffMs = target - now;
+  const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+
+  const label = document.getElementById('ddayLabel');
+  const num = document.getElementById('ddayNum');
+
+  if (diffDays > 0) {
+    label.textContent = '예선까지';
+    num.textContent = 'D-' + diffDays;
+  } else if (diffDays === 0) {
+    label.textContent = '오늘';
+    num.textContent = 'D-DAY';
+  } else {
+    label.textContent = '예선 종료';
+    num.textContent = '완료';
+  }
+}
+updateDday();
+
+// 남은 자리 조회
+async function loadCapacity() {
+  try {
+    const res = await fetch(GAS_URL + '?action=count');
+    const data = await res.json();
+    if (data.ok) {
+      document.getElementById('capacityText').textContent =
+        data.remaining + '명 남음 (' + data.applied + '/' + data.capacity + ')';
+      if (data.remaining <= 0) {
+        document.getElementById('applyBtn').disabled = true;
+        document.getElementById('applyBtn').textContent = '선착순 마감되었습니다';
+      }
+    }
+  } catch (err) {
+    document.getElementById('capacityText').textContent = '조회 실패';
+  }
+}
+loadCapacity();
+
+// 탭 전환
+function switchTab(tab) {
+  document.getElementById('applyCard').classList.toggle('hidden', tab !== 'apply');
+  document.getElementById('lookupCard').classList.toggle('hidden', tab !== 'lookup');
+  document.getElementById('tabApply').classList.toggle('active', tab === 'apply');
+  document.getElementById('tabLookup').classList.toggle('active', tab === 'lookup');
+}
+
+function showMsg(el, text, ok) {
+  el.textContent = text;
+  el.className = 'msg show ' + (ok ? 'ok' : 'err');
+}
+
+// 신청 처리
+document.getElementById('applyForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById('applyBtn');
+  const msg = document.getElementById('applyMsg');
+  btn.disabled = true;
+  btn.textContent = '처리 중...';
+
+  const body = new URLSearchParams({
+    action: 'apply',
+    name: document.getElementById('name').value.trim(),
+    birth: document.getElementById('birth').value.trim(),
+    phone: document.getElementById('phone').value.trim(),
+    song: document.getElementById('song').value.trim(),
+    program: document.getElementById('program').value.trim()
+  });
+
+  try {
+    const res = await fetch(GAS_URL, { method: 'POST', body });
+    const data = await res.json();
+    if (data.ok) {
+      showMsg(msg, '신청 완료! 접수번호: ' + data.receiptNo, true);
+      document.getElementById('applyForm').reset();
+      loadCapacity();
+      btn.textContent = '신청하기';
+    } else {
+      showMsg(msg, data.message, false);
+      btn.disabled = false;
+      btn.textContent = '신청하기';
+    }
+  } catch (err) {
+    showMsg(msg, '오류가 발생했습니다. 다시 시도해 주세요.', false);
+    btn.disabled = false;
+    btn.textContent = '신청하기';
+  }
+});
+
+// 조회 처리
+let lookupData = null;
+document.getElementById('lookupForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const msg = document.getElementById('lookupMsg');
+  const resultBox = document.getElementById('resultBox');
+  resultBox.classList.remove('show');
+
+  const body = new URLSearchParams({
+    action: 'lookup',
+    name: document.getElementById('lName').value.trim(),
+    phone: document.getElementById('lPhone').value.trim()
+  });
+
+  try {
+    const res = await fetch(GAS_URL, { method: 'POST', body });
+    const data = await res.json();
+    if (data.ok && data.found) {
+      msg.className = 'msg';
+      lookupData = data;
+      document.getElementById('rNo').textContent = data.receiptNo;
+      document.getElementById('rName').textContent = data.name;
+      document.getElementById('rSong').textContent = data.song;
+      document.getElementById('rProgram').textContent = data.program;
+      document.getElementById('rStatus').innerHTML =
+        '<span class="status-badge ' + data.status + '">' + data.status + '</span>';
+      document.getElementById('cancelBtn').style.display = data.status === '신청' ? 'block' : 'none';
+      resultBox.classList.add('show');
+    } else {
+      showMsg(msg, data.message || '신청 내역이 없습니다.', false);
+    }
+  } catch (err) {
+    showMsg(msg, '오류가 발생했습니다. 다시 시도해 주세요.', false);
+  }
+});
+
+// 취소 처리
+document.getElementById('cancelBtn').addEventListener('click', async () => {
+  if (!confirm('정말 신청을 취소하시겠습니까?')) return;
+
+  const body = new URLSearchParams({
+    action: 'cancel',
+    name: document.getElementById('lName').value.trim(),
+    phone: document.getElementById('lPhone').value.trim()
+  });
+
+  try {
+    const res = await fetch(GAS_URL, { method: 'POST', body });
+    const data = await res.json();
+    const msg = document.getElementById('lookupMsg');
+    if (data.ok) {
+      showMsg(msg, data.message, true);
+      document.getElementById('resultBox').classList.remove('show');
+      loadCapacity();
+    } else {
+      showMsg(msg, data.message, false);
+    }
+  } catch (err) {
+    showMsg(document.getElementById('lookupMsg'), '오류가 발생했습니다.', false);
+  }
+});
+</script>
+</body>
+</html>
