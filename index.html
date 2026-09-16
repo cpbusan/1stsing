@@ -290,9 +290,9 @@
   </header>
 
   <div class="dday-card">
-    <div class="label" id="ddayLabel">예선까지</div>
+    <div class="label" id="ddayLabel">예선마감까지</div>
     <div class="num" id="ddayNum">D-00</div>
-    <div class="sub">신청기간 9/22(화) ~ 10/6(월) · 선착순 마감</div>
+    <div class="sub">신청기간 9/21(월) ~ 10/6(월) · 선착순 마감</div>
   </div>
 
   <div class="capacity-card">
@@ -420,9 +420,30 @@ function formatPhone(input) {
 formatPhone(document.getElementById('phone'));
 formatPhone(document.getElementById('lPhone'));
 
+// 신청 기간 설정 (9/22 00:00 ~ 10/6 23:59)
+const APPLY_START = new Date('2026-09-21T00:00:00+09:00');
+const APPLY_END = new Date('2026-10-06T23:59:59+09:00');
+
+function checkApplyPeriod() {
+  const now = new Date();
+  const btn = document.getElementById('applyBtn');
+  if (now < APPLY_START) {
+    btn.disabled = true;
+    btn.textContent = '9월 21일부터 신청 가능합니다';
+    return false;
+  }
+  if (now > APPLY_END) {
+    btn.disabled = true;
+    btn.textContent = '신청기간이 마감되었습니다';
+    return false;
+  }
+  return true;
+}
+checkApplyPeriod();
+
 // D-day 계산 (예선일 2026-10-12 14:00 기준)
 function updateDday() {
-  const target = new Date('2026-10-12T14:00:00+09:00');
+  const target = new Date('2026-10-06T23:59:59+09:00'); // 신청 마감일(10/6)
   const now = new Date();
   const diffMs = target - now;
   const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
@@ -431,14 +452,14 @@ function updateDday() {
   const num = document.getElementById('ddayNum');
 
   if (diffDays > 0) {
-    label.textContent = '예선까지';
+    label.textContent = '예선마감까지';
     num.textContent = 'D-' + diffDays;
   } else if (diffDays === 0) {
-    label.textContent = '오늘';
+    label.textContent = '오늘 마감';
     num.textContent = 'D-DAY';
   } else {
-    label.textContent = '예선 종료';
-    num.textContent = '완료';
+    label.textContent = '신청 마감';
+    num.textContent = '마감';
   }
 }
 updateDday();
@@ -478,6 +499,7 @@ function showMsg(el, text, ok) {
 // 신청 처리
 document.getElementById('applyForm').addEventListener('submit', async (e) => {
   e.preventDefault();
+  if (!checkApplyPeriod()) return;
   const btn = document.getElementById('applyBtn');
   const msg = document.getElementById('applyMsg');
   btn.disabled = true;
